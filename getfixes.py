@@ -31,7 +31,7 @@ arpt_location_regex = re.compile('Lat')
 latlong_regex = re.compile(r'(\d+)-(\d+)-(\d+.\d+)([NSEW])')
 var_regex = re.compile(r'(\d?\d)([EW])')
 offset_regex = re.compile(r'([A-Z][A-Z][A-Z])(\d\d\d)(\d\d\d)')
-airnav = 'https://www.airnav.com/'
+airnav = 'http://www.airnav.com/'
 
 def get_latlong(s):
     match = latlong_regex.match(s)
@@ -121,8 +121,8 @@ for line in sys.stdin:
                 bearing = bearing - 360
             loc = (geopy.distance.distance(kilometers=1.852*dist)
                 .destination(navaid, bearing=bearing))
-    except e:
-        pass
+    except Exception as e:
+        print(identifier + ':  ' + str(e), file=sys.stderr)
     if loc is not None:
         lat, long = point_to_strs(loc)
         print('{}\t{}\t{}'.format(identifier, lat, long))
